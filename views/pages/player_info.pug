@@ -1,0 +1,55 @@
+//- player-info.pug
+include ../partials/header.pug
+include ../partials/menu.pug
+
+div.container
+  br
+  div.row
+    div.col-4
+      div.card
+        //- TODO: Modify the pug code below to conditionally set the image_src
+        - let image_src = '../../resources/img/helmet.jpg'
+        if(oneplayer)
+          img.card-img-top#player_img(src= oneplayer.img_src, alt="Football Player")
+        else
+          img.card-img-top#player_img(src= image_src, alt="Football Player")
+        div.card-body.mx-auto
+          form.form(action="/player_info/post", method="get")
+            select.custom-select(name="player_choice", onchange="this.form.submit()")
+              option(selected) Select Player
+              - if(data)
+                for player in data
+                  option(value=player.id)=player.name
+                  //for some reason it's not changing the player name, no idea why
+
+              //- TODO: Populate the select with player options. Set the value to the player's id and display the player's name.
+    div.col-8
+      div.table-responsive
+        table.table
+          
+          tr
+            th Year
+            - if(oneplayer)
+              th #{oneplayer.year}
+          tr
+            th Major
+            - if(oneplayer)
+              th #{oneplayer.major}
+          tr
+            th Games Played
+            - if(oneplayer)
+              th #{gamesPlayed.count}
+          tr
+            - if(oneplayer)
+              td Total Passing Yards: #{oneplayer.passing_yards}
+              td Avg. Passing Yards: #{parseInt(oneplayer.passing_yards / gamesPlayed.count)}
+          tr
+            - if(oneplayer)
+              td Total Rushing Yards: #{oneplayer.rushing_yards}
+              td Avg. Rushing Yards: #{parseInt(oneplayer.rushing_yards / gamesPlayed.count)}
+          tr
+            - if(oneplayer)
+              td Total Receiving Yards: #{oneplayer.receiving_yards}
+              td Avg. Receiving Yards: #{parseInt(oneplayer.receiving_yards / gamesPlayed.count)}
+
+include ../partials/footer.pug
